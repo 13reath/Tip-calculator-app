@@ -6,75 +6,133 @@ function App() {
   const [tip, setTip] = useState("");
   const [customTip, setCustomTip] = useState("");
 
-  const actualTip = customTip !== "" ? customTip : tip;
+  // Вычисляемые значения
+  const actualTip = getActualTip(customTip, tip);
+  const tipAmount = calculateTipAmount(bill, person, actualTip);
+  const totalPerPerson = calculateTotalPerPerson(bill, person, tipAmount);
 
-  // Вычисляем сумму чаевых
-  const tipAmount =
-    bill > 0 && person > 0 && actualTip > 0
-      ? (bill * actualTip) / (100 * person)
-      : 0;
-
-  // Вычисляем общую сумму на человека
-  const totalPerPerson = bill > 0 && person > 0 ? bill / person + tipAmount : 0;
-
-  function handleReset() {
+  // Обработчики
+  const handleReset = () => {
     setBill("");
     setPerson("");
     setTip("");
     setCustomTip("");
-  }
+  };
 
   return (
     <main>
       <div className="card">
-        <div className="card-bill">
-          <CardLabel label="Bill" />
-          <CardInput icon="dollar" value={bill} setValue={setBill} />
-        </div>
+        <BillSection bill={bill} setBill={setBill} />
 
-        <div className="card-tip">
-          <CardLabel label="Select Tip %" />
-          <div className="card-buttons-box">
-            <Button text="5%" setValue={setTip} value={5} />
-            <Button text="10%" setValue={setTip} value={10} />
-            <Button text="15%" setValue={setTip} value={15} />
-            <Button text="25%" setValue={setTip} value={25} />
-            <Button text="50%" setValue={setTip} value={50} />
-            <input
-              type="number"
-              placeholder="Custom"
-              value={customTip}
-              onChange={(e) => setCustomTip(+e.target.value)}
-            />
-          </div>
-        </div>
+        <TipSection
+          tip={tip}
+          setTip={setTip}
+          customTip={customTip}
+          setCustomTip={setCustomTip}
+        />
 
-        <div className="card-people">
-          <CardLabel label="Number of People" />
-          <CardInput icon="person" value={person} setValue={setPerson} />
-        </div>
-        <div className="card-receipt">
-          <div className="card-receipt-tip">
-            <div className="card-receipt-text">
-              <p>Tip Amount</p>
-              <span>/ person</span>
-            </div>
-            <h1>${tipAmount.toFixed(2)}</h1>
-          </div>
-          <div className="card-receipt-total">
-            <div className="card-receipt-text">
-              <p>Total</p>
-              <span>/ person</span>
-            </div>
-            <h1>${totalPerPerson.toFixed(2)}</h1>
-          </div>
-          <button onClick={handleReset}>Reset</button>
-        </div>
+        <PeopleSection person={person} setPerson={setPerson} />
+
+        <ReceiptSection
+          tipAmount={tipAmount}
+          totalPerPerson={totalPerPerson}
+          onReset={handleReset}
+        />
       </div>
     </main>
   );
 }
 
+// Вспомогательные функции
+function getActualTip(customTip, tip) {
+  return customTip !== "" ? customTip : tip;
+}
+
+function calculateTipAmount(bill, person, tipPercent) {
+  if (!bill || !person || !tipPercent) return 0;
+  return (bill * tipPercent) / (100 * person);
+}
+
+function calculateTotalPerPerson(bill, person, tipAmount) {
+  if (!bill || !person) return 0;
+  return bill / person + tipAmount;
+}
+
+// Компоненты секций
+function BillSection({ bill, setBill }) {
+  return (
+    <div className="card-bill">
+      <CardLabel label="Bill" />
+      <CardInput icon="dollar" value={bill} setValue={setBill} />
+    </div>
+  );
+}
+
+function TipSection({ tip, setTip, customTip, setCustomTip }) {
+  const tipValues = [5, 10, 15, 25, 50];
+
+  return (
+    <div className="card-tip">
+      <CardLabel label="Select Tip %" />
+      <div className="card-buttons-box">
+        {tipValues.map((value) => (
+          <Button
+            key={value}
+            text={`${value}%`}
+            setValue={setTip}
+            value={value}
+            active={tip === value && !customTip}
+          />
+        ))}
+        <input
+          type="number"
+          placeholder="Custom"
+          value={customTip}
+          onChange={(e) => setCustomTip(Number(e.target.value) || "")}
+        />
+      </div>
+    </div>
+  );
+}
+
+function PeopleSection({ person, setPerson }) {
+  return (
+    <div className="card-people">
+      <CardLabel label="Number of People" />
+      <CardInput icon="person" value={person} setValue={setPerson} />
+    </div>
+  );
+}
+
+function ReceiptSection({ tipAmount, totalPerPerson, onReset }) {
+  return (
+    <div className="card-receipt">
+      <ReceiptItem label="Tip" value={tipAmount} subtext="/ person" />
+      <ReceiptItem label="Total" value={totalPerPerson} subtext="/ person" />
+      <button
+        className="reset-button"
+        onClick={onReset}
+        disabled={!tipAmount && !totalPerPerson}
+      >
+        Reset
+      </button>
+    </div>
+  );
+}
+
+function ReceiptItem({ label, value, subtext }) {
+  return (
+    <div className={`card-receipt-${label.toLowerCase().replace(" ", "-")}`}>
+      <div className="card-receipt-text">
+        <p>{label}</p>
+        <span>{subtext}</span>
+      </div>
+      <h1>${value.toFixed(2)}</h1>
+    </div>
+  );
+}
+
+// Базовые компоненты
 function CardLabel({ label }) {
   return <label className="card-label">{label}</label>;
 }
@@ -90,15 +148,19 @@ function CardInput({ icon, value, setValue }) {
         type="number"
         placeholder="0"
         value={value}
-        onChange={(e) => setValue(+e.target.value)}
+        min="0"
+        onChange={(e) => setValue(Number(e.target.value) || "")}
       />
     </div>
   );
 }
 
-function Button({ text, value, setValue }) {
+function Button({ text, value, setValue, active }) {
   return (
-    <button onClick={() => setValue(value)} className="card-button">
+    <button
+      onClick={() => setValue(value)}
+      className={`card-button ${active ? "active" : ""}`}
+    >
       {text}
     </button>
   );
