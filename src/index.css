@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap");
 
+/* CSS Variables */
 :root {
   --Green-400: hsl(172, 67%, 45%);
   --Green-900: hsl(183, 100%, 15%);
@@ -8,16 +9,224 @@
   --Grey-200: hsl(185, 41%, 84%);
   --Grey-50: hsl(189, 47%, 97%);
   --White: hsl(0, 100%, 100%);
+  --Red: hsl(0, 100%, 66%);
 
   --Font-input: 24px;
 }
 
+/* Reset & Global Styles */
 * {
   margin: 0;
-  paddin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
 body {
-  font-family: "Space Mono";
+  font-family: "Space Mono", monospace;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--Grey-500);
+  background-color: var(--Grey-200);
+}
+
+/* Main Layout */
+main {
+  min-height: 100vh;
+  background-color: var(--Grey-200);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Card Container */
+.card {
+  background-color: var(--White);
+  border-radius: 1.5rem;
+  width: 100%;
+  max-width: 920px;
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 3rem;
+}
+
+/* Input Labels */
+.card-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--Grey-500);
+}
+
+/* Input Fields */
+.card-bill-input {
+  position: relative;
+  background-color: var(--Grey-50);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+/* Input Icons */
+.card-bill-input img {
+  position: absolute;
+  left: 1rem;
+  height: 16px;
+  width: 16px;
+}
+
+/* Input Fields Styling */
+.card-bill-input input {
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  padding: 0.8rem;
+  text-align: right;
+  font-family: "Space Mono", monospace;
+  font-weight: 700;
+  font-size: var(--Font-input);
+  color: var(--Green-900);
+}
+
+/* Remove number input arrows */
+.card-bill-input input::-webkit-inner-spin-button,
+.card-bill-input input::-webkit-outer-spin-button,
+.card-buttons-box input::-webkit-inner-spin-button,
+.card-buttons-box input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Error Message */
+.error-message {
+  color: var(--Red);
+  font-size: 0.875rem;
+  text-align: right;
+}
+
+/* Tip Buttons Container */
+.card-buttons-box {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+/* Tip Buttons */
+.card-buttons-box button {
+  background-color: var(--Green-900);
+  color: var(--White);
+  font-size: 1.25rem;
+  font-weight: 700;
+  padding: 0.625rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: "Space Mono", monospace;
+}
+
+/* Custom Tip Input */
+.card-buttons-box input {
+  background-color: var(--Grey-50);
+  border: none;
+  border-radius: 5px;
+  font-family: "Space Mono", monospace;
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-align: center;
+  color: var(--Green-900);
+  padding: 0.625rem;
+  width: 100%;
+}
+
+/* Button Hover State */
+.card-buttons-box button:hover,
+.card-buttons-box button.active {
+  background-color: var(--Green-400);
+  color: var(--Green-900);
+}
+
+/* Result Section */
+.card-receipt {
+  background-color: var(--Green-900);
+  border-radius: 1rem;
+  padding: 2.5rem 1.5rem 1.5rem;
+  color: var(--White);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  grid-column: 2;
+  grid-row: 1 / span 3;
+}
+
+/* Result Line Items */
+.card-receipt-tip,
+.card-receipt-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+/* Result Text Labels */
+.card-receipt-text p {
+  color: var(--White);
+  margin-bottom: 0.25rem;
+}
+
+/* Per Person Text */
+.card-receipt-text span {
+  color: var(--Grey-400);
+  font-size: 0.8rem;
+}
+
+/* Result Values */
+.card-receipt h1 {
+  color: var(--Green-400);
+  font-size: 2.5rem;
+}
+
+/* Reset Button */
+.card-receipt button {
+  background-color: var(--Green-400);
+  color: var(--Green-900);
+  font-family: "Space Mono", monospace;
+  font-weight: 700;
+  border: none;
+  border-radius: 5px;
+  padding: 0.8rem;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-size: 1.25rem;
+  margin-top: auto;
+}
+
+/* Reset Button Hover State */
+.card-receipt button:hover {
+  background-color: var(--Grey-200);
+}
+
+/* Left Column Content */
+.card-inputs {
+  grid-column: 1;
+}
+
+/* Mobile Layout */
+@media (max-width: 999px) {
+  .card {
+    grid-template-columns: 1fr;
+    max-width: 450px;
+    padding: 1.5rem;
+    gap: 1.5rem;
+  }
+
+  .card-receipt {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .card-receipt h1 {
+    font-size: var(--Font-input);
+  }
 }
