@@ -1,6 +1,6 @@
 # Tip Calculator App
 
-![Tip Calculator App](https://github.com/13reath/Tip-calculator-app/raw/main/design/desktop-preview.jpg)
+![Tip Calculator App](./public/design/desktop-design-completed.jpg)
 
 ## Overview
 
@@ -19,8 +19,6 @@ The Tip Calculator App is a responsive web application that calculates the tip a
 - [Challenges and Solutions](#challenges-and-solutions)
 - [Future Improvements](#future-improvements)
 - [Contributing](#contributing)
-- [License](#license)
-- [Acknowledgments](#acknowledgments)
 
 ## Features
 
@@ -41,13 +39,13 @@ Check out the live demo: [Tip Calculator App](https://13reath.github.io/Tip-calc
 ## Screenshots
 
 ### Desktop View
-![Desktop Design](https://github.com/13reath/Tip-calculator-app/raw/main/design/desktop-design-completed.jpg)
+![Desktop Design](./public/design/desktop-design-completed.jpg)
 
 ### Mobile View
-![Mobile Design](https://github.com/13reath/Tip-calculator-app/raw/main/design/mobile-design.jpg)
+![Mobile Design](./public/design/mobile-design.jpg)
 
 ### Active States
-![Active States](https://github.com/13reath/Tip-calculator-app/raw/main/design/active-states.jpg)
+![Active States](./public/design/active-states.jpg)
 
 ## Technologies Used
 
@@ -144,12 +142,3 @@ Contributions are welcome! If you'd like to contribute to this project, please f
 4. Commit your changes (`git commit -m 'Add some amazing feature'`)
 5. Push to the branch (`git push origin feature/amazing-feature`)
 6. Open a Pull Request
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Acknowledgments
-
-- [Frontend Mentor](https://www.frontendmentor.io/) for providing the design challenge
-- Thanks to all contributors who have helped improve this project
